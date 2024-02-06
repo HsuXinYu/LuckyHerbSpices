@@ -99,7 +99,9 @@ export default {
     },
     showModal(event, product) {
       this.event = event;
+
       if (event === 'post') {
+        this.product = {};
         this.$refs.postmodal.openModal();
       } else if (event === 'edit') {
         this.product = product;

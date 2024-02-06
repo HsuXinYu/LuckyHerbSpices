@@ -19,6 +19,7 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="tempProduct = { ...product }"
           ></button>
         </div>
         <div class="modal-body">
@@ -175,6 +176,7 @@
             type="button"
             class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
+            @click="tempProduct = { ...product }"
           >
             取消
           </button>
@@ -199,9 +201,7 @@ export default {
   props: ['event', 'product'],
   data() {
     return {
-      tempProduct: {
-        imagesUrl: [],
-      },
+      tempProduct: { imagesUrl: [] },
     };
   },
   methods: {
@@ -233,9 +233,8 @@ export default {
           this.$emit('get-product');
           this.hideModal();
         })
-        .catch((err) => {
+        .catch(() => {
           // console.dir(err);
-          alert(err.data.message);
         });
     },
     // uploadImage(e) {
@@ -266,29 +265,36 @@ export default {
         this.tempProduct.imagesUrl.pop();
       }
     },
-    // editProduct() {
-    //   const productId = this.tempProduct.id;
-    //   const product = { ...this.tempProduct };
+    editProduct() {
+      const productId = this.tempProduct.id;
+      const product = { ...this.tempProduct };
+      const url = `${import.meta.env.VITE_APP_API_URL}/api/${
+        import.meta.env.VITE_APP_API_PATH
+      }/admin/product/${productId}`;
 
-    //   axios
-    //     .put(`${this.url}/api/${this.path}/admin/product/${productId}`, {
-    //       data: product,
-    //     })
-    //     .then((res) => {
-    //       // console.log(res.data);
-    //       alert(res.data.message);
-    //       this.$emit('getProduct');
-    //       this.$emit('hideModal');
-    //     })
-    //     .catch((err) => {
-    //       // console.dir(err);
-    //       alert(err.data.message);
-    //     });
-    // },
+      axios
+        .put(url, {
+          data: product,
+        })
+        .then((res) => {
+          // console.log(res.data);
+          alert(res.data.message);
+          // 觸發父元件方法
+          this.$emit('get-product');
+          this.hideModal();
+        })
+        .catch(() => {
+          // console.dir(err);
+        });
+    },
+  },
+  watch: {
+    product(newProduct) {
+      this.tempProduct = { ...newProduct };
+    },
   },
   mounted() {
     this.modal = new Modal(this.$refs.productModal);
-    console.log(this.product);
   },
 };
 </script>
