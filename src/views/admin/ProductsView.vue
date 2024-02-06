@@ -4,7 +4,7 @@
       id="postProductBtn"
       type="button"
       class="btn btn-primary"
-      @click="showModal('post')"
+      @click.prevent="showModal('post')"
     >
       建立新的產品
     </button>
@@ -39,7 +39,7 @@
             <button
               type="button"
               class="btn btn-outline-primary btn-sm"
-              @click="showModal('edit', product)"
+              @click.prevent="showModal('edit', product)"
             >
               編輯
             </button>
@@ -47,7 +47,7 @@
               id="showDelModalBtn"
               type="button"
               class="btn btn-outline-danger btn-sm"
-              @click="showModal('del', product)"
+              @click.prevent="showModal('del', product)"
             >
               刪除
             </button>
@@ -56,17 +56,29 @@
       </tr>
     </tbody>
   </table>
+  <PostProductModal
+    ref="postmodal"
+    :event="event"
+    @get-product="getProduct"
+    :product="product"
+  ></PostProductModal>
 </template>
 
 <script>
 import axios from 'axios';
+import PostProductModal from '@/components/PostProductModal.vue';
 
 export default {
   data() {
     return {
       pagination: {},
       products: [],
+      event: '',
+      product: {},
     };
+  },
+  components: {
+    PostProductModal,
   },
   methods: {
     getProduct(page = 1) {
@@ -85,8 +97,29 @@ export default {
           alert(err.response.data.message);
         });
     },
+    showModal(event, product) {
+      this.event = event;
+      if (event === 'post') {
+        this.$refs.postmodal.openModal();
+      } else if (event === 'edit') {
+        this.product = product;
+        this.$refs.postmodal.openModal();
+      }
+      // } else if (event === 'del') {
+      //   this.tempProduct = product;
+      //   delModal.show();
+      // }
+    },
   },
   mounted() {
+    // 取得token並檢查用戶資料是否正確;
+    const token = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('hexToken='))
+      ?.split('=')[1];
+    // console.log(document.cookie, token);
+    axios.defaults.headers.common.Authorization = token;
+
     // 取得所有產品
     this.getProduct();
 

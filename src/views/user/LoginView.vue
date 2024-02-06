@@ -68,7 +68,7 @@ export default {
         })
         .catch(() => {
           // console.dir(err);
-          // alert('登入失敗');
+          alert('登入失敗');
         });
     },
   },

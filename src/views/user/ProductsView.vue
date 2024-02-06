@@ -51,11 +51,7 @@
       </tr>
     </tbody>
   </table>
-  <ProductModal
-    ref="modal"
-    :productDetail="productDetail"
-    v-model:value="getProductDetail"
-  ></ProductModal>
+  <ProductModal ref="modal" :productDetail="productDetail"></ProductModal>
 </template>
 
 <script>
@@ -78,6 +74,7 @@ export default {
   methods: {
     ...mapActions(cartStore, ['getCart', 'addToCart']),
     getProduct() {
+      const loader = this.$loading.show();
       // console.log(import.meta.env);
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
@@ -89,6 +86,7 @@ export default {
           // console.log(res.data);
           this.pagination = res.data.pagination;
           this.products = res.data.products;
+          loader.hide();
         })
         .catch(() => {
           // console.dir(err);
@@ -104,7 +102,6 @@ export default {
         .then((res) => {
           // console.log(res.data);
           this.productDetail = res.data.product;
-          this.qty = 1;
           this.$refs.modal.openModal();
         })
         .catch(() => {
