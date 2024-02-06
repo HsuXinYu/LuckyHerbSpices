@@ -37,11 +37,16 @@
               <div class="h5">現在只要 {{ productDetail.price }} 元</div>
               <div>
                 <div class="input-group">
-                  <input type="number" class="form-control" min="1" />
+                  <input
+                    type="number"
+                    class="form-control"
+                    min="1"
+                    :value="qty"
+                  />
                   <button
                     type="button"
                     class="btn btn-primary"
-                    @click.prevent="addToCart(productDetail.id)"
+                    @click.prevent="addToCart(productDetail.id, qty)"
                   >
                     加入購物車
                   </button>
@@ -57,15 +62,19 @@
 
 <script>
 import Modal from 'bootstrap/js/dist/modal';
+import cartStore from '@/stores/cartStore';
+import { mapActions } from 'pinia';
 
 export default {
   props: ['productDetail'],
   data() {
     return {
       modal: '',
+      qty: 1,
     };
   },
   methods: {
+    ...mapActions(cartStore, ['addToCart']),
     openModal() {
       this.modal.show();
     },

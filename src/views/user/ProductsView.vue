@@ -51,12 +51,18 @@
       </tr>
     </tbody>
   </table>
-  <ProductModal ref="modal" :productDetail="productDetail"></ProductModal>
+  <ProductModal
+    ref="modal"
+    :productDetail="productDetail"
+    v-model:value="getProductDetail"
+  ></ProductModal>
 </template>
 
 <script>
 import axios from 'axios';
 import ProductModal from '@/components/ProductModal.vue';
+import cartStore from '@/stores/cartStore';
+import { mapActions } from 'pinia';
 
 export default {
   data() {
@@ -70,6 +76,7 @@ export default {
     ProductModal,
   },
   methods: {
+    ...mapActions(cartStore, ['getCart', 'addToCart']),
     getProduct() {
       // console.log(import.meta.env);
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
@@ -85,14 +92,9 @@ export default {
         })
         .catch(() => {
           // console.dir(err);
-        })
-        .finally(() => {
-          // this.isLoading = false;
         });
     },
     getProductDetail(productId) {
-      // console.log(productId);
-
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
       }/product/${productId}`;
@@ -102,13 +104,11 @@ export default {
         .then((res) => {
           // console.log(res.data);
           this.productDetail = res.data.product;
+          this.qty = 1;
           this.$refs.modal.openModal();
         })
         .catch(() => {
           // console.dir(err);
-        })
-        .finally(() => {
-          // this.isLoading = false;
         });
     },
   },
