@@ -19,6 +19,7 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="hideModal"
           ></button>
         </div>
         <div class="modal-body">
@@ -41,12 +42,12 @@
                     type="number"
                     class="form-control"
                     min="1"
-                    :value="qty"
+                    v-model="qty"
                   />
                   <button
                     type="button"
                     class="btn btn-primary"
-                    @click.prevent="addToCart(productDetail.id, qty)"
+                    @blur.prevent="addToCart(productDetail.id, qty)"
                   >
                     加入購物車
                   </button>
@@ -79,6 +80,7 @@ export default {
       this.modal.show();
     },
     hideModal() {
+      this.qty = 1;
       this.modal.hide();
     },
   },

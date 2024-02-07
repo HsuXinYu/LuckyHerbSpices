@@ -41,7 +41,7 @@
             <button
               type="button"
               class="btn btn-outline-danger"
-              @click.prevent="addToCart(product.id)"
+              @blur.prevent="addToCart(product.id)"
             >
               <!-- <i class="fas fa-spinner fa-pulse"></i> -->
               加到購物車

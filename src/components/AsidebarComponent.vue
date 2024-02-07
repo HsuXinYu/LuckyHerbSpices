@@ -1,9 +1,6 @@
 <template>
   <ul class="aside nav flex-column">
     <li class="nav-item">
-      <RouterLink to="/admin" class="nav-link">首頁</RouterLink>
-    </li>
-    <li class="nav-item">
       <RouterLink to="/admin/my-products" class="nav-link">產品列表</RouterLink>
     </li>
     <li class="nav-item">

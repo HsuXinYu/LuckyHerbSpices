@@ -205,7 +205,7 @@ export default {
       return phoneNumber.test(value) ? true : '需要正確的電話號碼';
     },
     onSubmit() {
-      if (this.carts.length === 0) {
+      if (this.cartList.length === 0) {
         alert('購物車內無商品!');
       } else {
         // console.log(this.user, this.message);

@@ -1,7 +1,7 @@
 <template>
   <ul class="nav">
     <li class="nav-item">
-      <RouterLink to="/home" class="nav-link">首頁</RouterLink>
+      <RouterLink to="/" class="nav-link">首頁</RouterLink>
     </li>
     <li class="nav-item">
       <RouterLink to="/products" class="nav-link">產品</RouterLink>

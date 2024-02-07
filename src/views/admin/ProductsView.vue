@@ -62,23 +62,38 @@
     @get-product="getProduct"
     :product="product"
   ></PostProductModal>
+  <DelProductModal
+    ref="delmodal"
+    :event="event"
+    @get-product="getProduct"
+    :product="product"
+  >
+  </DelProductModal>
+  <PaginationComponent
+    :pagination="pagination"
+    @get-product="getProduct"
+  ></PaginationComponent>
 </template>
 
 <script>
 import axios from 'axios';
 import PostProductModal from '@/components/PostProductModal.vue';
+import DelProductModal from '../../components/DelProductModal.vue';
+import PaginationComponent from '../../components/PaginationComponent.vue';
 
 export default {
   data() {
     return {
-      pagination: {},
       products: [],
       event: '',
       product: {},
+      pagination: {},
     };
   },
   components: {
     PostProductModal,
+    DelProductModal,
+    PaginationComponent,
   },
   methods: {
     getProduct(page = 1) {
@@ -106,11 +121,10 @@ export default {
       } else if (event === 'edit') {
         this.product = product;
         this.$refs.postmodal.openModal();
+      } else if (event === 'del') {
+        this.product = product;
+        this.$refs.delmodal.openModal();
       }
-      // } else if (event === 'del') {
-      //   this.tempProduct = product;
-      //   delModal.show();
-      // }
     },
   },
   mounted() {
