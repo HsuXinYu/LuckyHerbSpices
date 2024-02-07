@@ -1,0 +1,1 @@
+import{_ as o,o as s,c as n,F as t,a as e}from"./index-Z2iVc0QE.js";const c={},a=e("h1",null,"Hello, This is Home Page.",-1),l=e("hr",null,null,-1);function r(_,i){return s(),n(t,null,[a,l],64)}const u=o(c,[["render",r]]);export{u as default};
