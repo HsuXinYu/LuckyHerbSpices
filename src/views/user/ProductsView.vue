@@ -41,7 +41,8 @@
             <button
               type="button"
               class="btn btn-outline-danger"
-              @blur.prevent="addToCart(product.id)"
+              :disabled="isLoading"
+              @click.prevent="addToCart(product.id)"
             >
               <!-- <i class="fas fa-spinner fa-pulse"></i> -->
               加到購物車
@@ -58,7 +59,7 @@
 import axios from 'axios';
 import ProductModal from '@/components/ProductModal.vue';
 import cartStore from '@/stores/cartStore';
-import { mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 
 export default {
   data() {
@@ -70,6 +71,9 @@ export default {
   },
   components: {
     ProductModal,
+  },
+  computed: {
+    ...mapState(cartStore, ['isLoading']),
   },
   methods: {
     ...mapActions(cartStore, ['getCart', 'addToCart']),

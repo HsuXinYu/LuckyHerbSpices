@@ -159,6 +159,7 @@
 import axios from 'axios';
 import cartStore from '@/stores/cartStore';
 import { mapState, mapActions } from 'pinia';
+import swal from 'sweetalert';
 import {
   Form as VForm,
   Field as VField,
@@ -206,7 +207,7 @@ export default {
     },
     onSubmit() {
       if (this.cartList.length === 0) {
-        alert('購物車內無商品!');
+        swal('', '購物車內無商品', 'warning');
       } else {
         // console.log(this.user, this.message);
         const order = { user: this.user, message: this.message };
@@ -220,7 +221,7 @@ export default {
           .then((res) => {
             // console.log(res.data);
             this.$refs.form.resetForm();
-            alert(res.data.message);
+            swal('', res.data.message, 'success', { timer: 2000 });
             this.getCart();
           })
           .catch(() => {

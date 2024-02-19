@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default defineStore('cartStore', {
   state: () => ({
     cartList: [],
     total: 0,
     final_total: 0,
+    isLoading: false,
   }),
   actions: {
     getCart() {
@@ -25,6 +27,7 @@ export default defineStore('cartStore', {
     },
     addToCart(productId, qty = 1) {
       // console.log(productId, qty);
+      this.isLoading = true;
       const cart = { product_id: productId, qty };
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
@@ -34,7 +37,8 @@ export default defineStore('cartStore', {
         .post(url, { data: cart })
         .then((res) => {
           // console.log(res.data);
-          alert(res.data.message);
+          this.isLoading = false;
+          swal('', res.data.message, 'success', { timer: 2000 });
           this.getCart();
         })
         .catch(() => {
@@ -52,7 +56,7 @@ export default defineStore('cartStore', {
         axios
           .delete(url)
           .then((res) => {
-            alert(res.data.message);
+            swal('', res.data.message, 'success', { timer: 2000 });
             this.getCart();
           })
           .catch(() => {
@@ -67,7 +71,7 @@ export default defineStore('cartStore', {
           .delete(url)
           .then((res) => {
             // console.log(res.data);
-            alert(res.data.message);
+            swal('', res.data.message, 'success', { timer: 2000 });
             this.getCart();
           })
           .catch(() => {
@@ -91,7 +95,7 @@ export default defineStore('cartStore', {
         })
         .then((res) => {
           // console.log(res.data);
-          alert(res.data.message);
+          swal('', res.data.message, 'success', { timer: 2000 });
           this.getCart();
         })
         .catch(() => {

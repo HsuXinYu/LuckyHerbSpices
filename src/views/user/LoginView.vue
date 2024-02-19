@@ -42,6 +42,7 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default {
   data() {
@@ -68,7 +69,7 @@ export default {
         })
         .catch(() => {
           // console.dir(err);
-          alert('登入失敗');
+          swal('', '登入失敗', 'warning', { timer: 2000 });
         });
     },
   },

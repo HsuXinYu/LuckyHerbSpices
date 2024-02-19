@@ -47,7 +47,8 @@
                   <button
                     type="button"
                     class="btn btn-primary"
-                    @blur.prevent="addToCart(productDetail.id, qty)"
+                    :disabled="isLoading"
+                    @click.prevent="addToCart(productDetail.id, qty)"
                   >
                     加入購物車
                   </button>
@@ -64,7 +65,7 @@
 <script>
 import Modal from 'bootstrap/js/dist/modal';
 import cartStore from '@/stores/cartStore';
-import { mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 
 export default {
   props: ['productDetail'],
@@ -73,6 +74,9 @@ export default {
       modal: '',
       qty: 1,
     };
+  },
+  computed: {
+    ...mapState(cartStore, ['isLoading']),
   },
   methods: {
     ...mapActions(cartStore, ['addToCart']),

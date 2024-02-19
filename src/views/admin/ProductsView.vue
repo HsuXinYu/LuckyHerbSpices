@@ -77,9 +77,10 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 import PostProductModal from '@/components/PostProductModal.vue';
-import DelProductModal from '../../components/DelProductModal.vue';
-import PaginationComponent from '../../components/PaginationComponent.vue';
+import DelProductModal from '@/components/DelProductModal.vue';
+import PaginationComponent from '@/components/PaginationComponent.vue';
 
 export default {
   data() {
@@ -108,8 +109,8 @@ export default {
           this.pagination = res.data.pagination;
           this.products = res.data.products;
         })
-        .catch((err) => {
-          alert(err.response.data.message);
+        .catch(() => {
+          swal('', '伺服器無法連線', 'warning', { timer: 2000 });
         });
     },
     showModal(event, product) {

@@ -7,6 +7,7 @@
 <script>
 import axios from 'axios';
 import AsidebarComponent from '@/components/AsidebarComponent.vue';
+import swal from 'sweetalert';
 
 export default {
   components: {
@@ -23,7 +24,7 @@ export default {
         })
         .catch((err) => {
           // console.dir(err);
-          alert(err.response.data.message);
+          swal('', err.response.data.message, 'warning', { timer: 2000 });
           this.$router.push('/login');
         });
     },
