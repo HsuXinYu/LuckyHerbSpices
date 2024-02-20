@@ -162,6 +162,7 @@
                     type="checkbox"
                     :true-value="1"
                     :false-value="0"
+                    v-model="tempProduct.is_enabled"
                   />
                   <label class="form-check-label" for="is_enabled"
                     >是否啟用</label
@@ -196,6 +197,7 @@
 <script>
 import axios from 'axios';
 import Modal from 'bootstrap/js/dist/modal';
+import swal from 'sweetalert';
 
 export default {
   props: ['event', 'product'],
@@ -228,7 +230,7 @@ export default {
         .post(url, { data: product })
         .then((res) => {
           // console.log(res.data);
-          alert(res.data.message);
+          swal('', res.data.message, 'success', { timer: 2000 });
           // 觸發父元件方法
           this.$emit('get-product');
           this.hideModal();
@@ -278,7 +280,7 @@ export default {
         })
         .then((res) => {
           // console.log(res.data);
-          alert(res.data.message);
+          swal('', res.data.message, 'success', { timer: 2000 });
           // 觸發父元件方法
           this.$emit('get-product');
           this.hideModal();

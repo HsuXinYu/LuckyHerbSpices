@@ -10,12 +10,12 @@
       >
         <a
           class="page-link"
-          @click.prevent="getProduct(pagination.current_page - 1)"
+          @click.prevent="getPages(pagination.current_page - 1)"
           >Previous</a
         >
       </li>
       <li class="page-item" v-for="page in pagination.total_pages" :key="page">
-        <a class="page-link" @click="getProduct(page)">{{ page }}</a>
+        <a class="page-link" @click="getPages(page)">{{ page }}</a>
       </li>
       <li
         class="page-item"
@@ -25,7 +25,7 @@
       >
         <a
           class="page-link"
-          @click.prevent="getProduct(pagination.current_page + 1)"
+          @click.prevent="getPages(pagination.current_page + 1)"
           >Next</a
         >
       </li>
@@ -35,13 +35,17 @@
 
 <script>
 export default {
-  props: ['pagination'],
+  props: ['pagination', 'view'],
   data() {
     return {};
   },
   methods: {
-    getProduct(page) {
-      this.$emit('get-product', page);
+    getPages(page) {
+      if (this.view === 'product') {
+        this.$emit('get-product', page);
+      } else if (this.view === 'order') {
+        this.$emit('get-order', page);
+      }
     },
   },
 };

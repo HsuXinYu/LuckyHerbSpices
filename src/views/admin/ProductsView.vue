@@ -62,14 +62,10 @@
     @get-product="getProduct"
     :product="product"
   ></PostProductModal>
-  <DelProductModal
-    ref="delmodal"
-    :event="event"
-    @get-product="getProduct"
-    :product="product"
-  >
+  <DelProductModal ref="delmodal" @get-product="getProduct" :product="product">
   </DelProductModal>
   <PaginationComponent
+    :view="view"
     :pagination="pagination"
     @get-product="getProduct"
   ></PaginationComponent>
@@ -85,6 +81,7 @@ import PaginationComponent from '@/components/PaginationComponent.vue';
 export default {
   data() {
     return {
+      view: 'product',
       products: [],
       event: '',
       product: {},
@@ -98,6 +95,7 @@ export default {
   },
   methods: {
     getProduct(page = 1) {
+      const loader = this.$loading.show();
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
       }/admin/products/?page=${page}`;
@@ -108,6 +106,7 @@ export default {
           // console.log(res.data);
           this.pagination = res.data.pagination;
           this.products = res.data.products;
+          loader.hide();
         })
         .catch(() => {
           swal('', '伺服器無法連線', 'warning', { timer: 2000 });
@@ -139,10 +138,6 @@ export default {
 
     // 取得所有產品
     this.getProduct();
-
-    // 建立modal實體
-    // postModal = new bootstrap.Modal('#productModal');
-    // delModal = new bootstrap.Modal('#delProductModal');
   },
 };
 </script>
