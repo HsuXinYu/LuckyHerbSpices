@@ -1,17 +1,17 @@
 <template>
   <div
-    id="delProductModal"
-    ref="delProductModal"
+    id="delCouponModal"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="delCouponModal"
     aria-hidden="true"
+    ref="delCouponModal"
   >
     <div class="modal-dialog">
       <div class="modal-content border-0">
         <div class="modal-header bg-danger text-white">
-          <h5 id="exampleModalLabel" class="modal-title">
-            <span>刪除產品</span>
+          <h5 id="delCouponModal" class="modal-title">
+            <span>刪除訂單</span>
           </h5>
           <button
             type="button"
@@ -22,8 +22,8 @@
         </div>
         <div class="modal-body">
           是否刪除
-          <strong class="text-danger">{{ product.title }}</strong>
-          商品(刪除後將無法恢復)。
+          <strong class="text-danger">{{ coupon.title }}</strong>
+          優惠券(刪除後將無法恢復)。
         </div>
         <div class="modal-footer">
           <button
@@ -33,7 +33,7 @@
           >
             取消
           </button>
-          <button type="button" class="btn btn-danger" @click="deleteProduct">
+          <button type="button" class="btn btn-danger" @click="deleteCoupon">
             確認刪除
           </button>
         </div>
@@ -47,7 +47,7 @@ import Modal from 'bootstrap/js/dist/modal';
 import swal from 'sweetalert';
 
 export default {
-  props: ['product'],
+  props: ['coupon'],
   methods: {
     openModal() {
       this.modal.show();
@@ -55,19 +55,18 @@ export default {
     hideModal() {
       this.modal.hide();
     },
-    deleteProduct() {
-      //   console.log(this.product.id);
-      const productId = this.product.id;
+    deleteCoupon() {
+      console.log(this.coupon.id);
+      const couponId = this.coupon.id;
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
-      }/admin/product/${productId}`;
-
+      }/admin/coupon/${couponId}`;
       axios
         .delete(url)
         .then((res) => {
           // console.log(res.data);
           swal('', res.data.message, 'success', { timer: 2000 });
-          this.$emit('get-product');
+          this.$emit('get-coupon');
           this.hideModal();
         })
         .catch(() => {
@@ -77,7 +76,7 @@ export default {
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.delProductModal);
+    this.modal = new Modal(this.$refs.delCouponModal);
   },
 };
 </script>

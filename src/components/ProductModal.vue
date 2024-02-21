@@ -6,7 +6,7 @@
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
-    ref="modal"
+    ref="productModal"
   >
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content border-0">
@@ -71,7 +71,6 @@ export default {
   props: ['productDetail'],
   data() {
     return {
-      modal: '',
       qty: 1,
     };
   },
@@ -89,7 +88,7 @@ export default {
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.modal);
+    this.modal = new Modal(this.$refs.productModal);
   },
 };
 </script>

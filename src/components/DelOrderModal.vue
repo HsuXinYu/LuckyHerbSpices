@@ -1,11 +1,11 @@
 <template>
   <div
     id="delOrderModal"
-    ref="delOrderModal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="delOrderModalLabel"
     aria-hidden="true"
+    ref="delOrderModal"
   >
     <div class="modal-dialog">
       <div class="modal-content border-0">

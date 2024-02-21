@@ -4,14 +4,14 @@
     class="modal fade"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="productModalLabel"
+    aria-labelledby="exampleModalLabel"
     aria-hidden="true"
     ref="productModal"
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
-          <h5 id="productModalLabel" class="modal-title">
+          <h5 id="exampleModalLabel" class="modal-title">
             <!-- <span>{{ event === 'post' ? '新增產品' : '編輯產品' }}</span> -->
           </h5>
           <button
