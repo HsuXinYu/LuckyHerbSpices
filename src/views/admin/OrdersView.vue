@@ -99,20 +99,22 @@ export default {
       axios
         .get(url)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           this.pagination = res.data.pagination;
           this.orders = res.data.orders;
-          loader.hide();
         })
-        .catch(() => {
-          swal('', '伺服器無法連線', 'warning', { timer: 2000 });
+        .catch((err) => {
+          swal('', err.response.data.message, 'warning', { timer: 2000 });
+        })
+        .finally(() => {
+          loader.hide();
         });
     },
     editOrder(order) {
       const tmplateOrder = { ...order };
       tmplateOrder.is_paid = !tmplateOrder.is_paid;
       const orderId = order.id;
-      console.log(tmplateOrder);
+      // console.log(tmplateOrder);
 
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
@@ -121,7 +123,7 @@ export default {
       axios
         .put(url, { data: tmplateOrder })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           swal('', res.data.message, 'success', { timer: 2000 });
           this.getOrder();
         })
@@ -143,14 +145,6 @@ export default {
     },
   },
   mounted() {
-    // 取得token並檢查用戶資料是否正確;
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('hexToken='))
-      ?.split('=')[1];
-    // console.log(document.cookie, token);
-    axios.defaults.headers.common.Authorization = token;
-
     // 取得所有訂單
     this.getOrder();
   },

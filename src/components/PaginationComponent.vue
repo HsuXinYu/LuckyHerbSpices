@@ -45,6 +45,8 @@ export default {
         this.$emit('get-product', page);
       } else if (this.view === 'order') {
         this.$emit('get-order', page);
+      } else if (this.view === 'coupon') {
+        this.$emit('get-coupon', page);
       }
     },
   },

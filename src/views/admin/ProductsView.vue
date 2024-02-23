@@ -106,10 +106,12 @@ export default {
           // console.log(res.data);
           this.pagination = res.data.pagination;
           this.products = res.data.products;
-          loader.hide();
         })
-        .catch(() => {
-          swal('', '伺服器無法連線', 'warning', { timer: 2000 });
+        .catch((err) => {
+          swal('', err.response.data.message, 'warning', { timer: 2000 });
+        })
+        .finally(() => {
+          loader.hide();
         });
     },
     showModal(event, product) {
@@ -128,14 +130,6 @@ export default {
     },
   },
   mounted() {
-    // 取得token並檢查用戶資料是否正確;
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('hexToken='))
-      ?.split('=')[1];
-    // console.log(document.cookie, token);
-    axios.defaults.headers.common.Authorization = token;
-
     // 取得所有產品
     this.getProduct();
   },

@@ -12,7 +12,7 @@
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
           <h5 id="exampleModalLabel" class="modal-title">
-            <!-- <span>{{ event === 'post' ? '新增產品' : '編輯產品' }}</span> -->
+            <span>{{ event === 'post' ? '新增產品' : '編輯產品' }}</span>
           </h5>
           <button
             type="button"

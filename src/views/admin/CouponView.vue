@@ -64,16 +64,24 @@
     :coupon="coupon"
     @get-coupon="getCoupon"
   ></DelCouponModal>
+  <PaginationComponent
+    :view="view"
+    :pagination="pagination"
+    @get-coupon="getCoupon"
+  ></PaginationComponent>
 </template>
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 import PostCouponModal from '@/components/PostCouponModal.vue';
 import DelCouponModal from '@/components/DelCouponModal.vue';
+import PaginationComponent from '@/components/PaginationComponent.vue';
 
 export default {
   data() {
     return {
+      view: 'coupon',
       coupons: [],
       event: '',
       coupon: {},
@@ -83,9 +91,11 @@ export default {
   components: {
     PostCouponModal,
     DelCouponModal,
+    PaginationComponent,
   },
   methods: {
     getCoupon() {
+      const loader = this.$loading.show();
       const url = `${import.meta.env.VITE_APP_API_URL}/api/${
         import.meta.env.VITE_APP_API_PATH
       }/admin/coupons`;
@@ -97,8 +107,11 @@ export default {
           this.pagination = res.data.pagination;
           this.coupons = res.data.coupons;
         })
-        .catch(() => {
-          // console.dir(err);
+        .catch((err) => {
+          swal('', err.response.data.message, 'warning', { timer: 2000 });
+        })
+        .finally(() => {
+          loader.hide();
         });
     },
     showModal(event, coupon) {
@@ -117,14 +130,7 @@ export default {
     },
   },
   mounted() {
-    // 取得token並檢查用戶資料是否正確;
-    const token = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('hexToken='))
-      ?.split('=')[1];
-    // console.log(document.cookie, token);
-    axios.defaults.headers.common.Authorization = token;
-
+    // 取得所有優惠券
     this.getCoupon();
   },
 };

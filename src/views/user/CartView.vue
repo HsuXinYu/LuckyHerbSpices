@@ -1,6 +1,15 @@
 <template>
   <div>
     <!-- 購物車 -->
+    <div class="d-flex justify-content-end">
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        @click="removeFromCart('all')"
+      >
+        清空購物車
+      </button>
+    </div>
     <table class="table align-middle">
       <thead>
         <tr>
@@ -25,7 +34,9 @@
             </td>
             <td>
               {{ item.product.title }}
-              <!-- <div class="text-success">已套用優惠券</div> -->
+              <div class="text-success" v-if="useCoupon">
+                {{ useCoupon.message }}
+              </div>
             </td>
             <td>
               <div class="input-group input-group-sm">
@@ -37,15 +48,15 @@
                     v-model.number="item.qty"
                     @blur="updateCart(item)"
                   />
-                  <span class="input-group-text" id="basic-addon2">{{
-                    item.product.unit
-                  }}</span>
+                  <span class="input-group-text">{{ item.product.unit }}</span>
                 </div>
               </div>
             </td>
             <td class="text-end">
               {{ item.product.price }}
-              <!-- <small class="text-success">折扣價：</small> -->
+              <small class="text-success" v-if="useCoupon">{{
+                useCoupon.data.final_total
+              }}</small>
             </td>
           </tr>
         </template>
@@ -55,21 +66,23 @@
           <td colspan="3" class="text-end">總計</td>
           <td class="text-end">{{ total }}</td>
         </tr>
-        <tr>
-          <!-- <td colspan="3" class="text-end text-success">折扣價</td>
-                <td class="text-end text-success">{{ }}</td> -->
+        <tr v-if="useCoupon">
+          <td colspan="3" class="text-end text-success">折扣價</td>
+          <td class="text-end text-success">
+            {{ useCoupon.data.final_total }}
+          </td>
         </tr>
       </tfoot>
     </table>
-    <div class="text-end">
-      <button
-        type="button"
-        class="btn btn-outline-danger"
-        @click="removeFromCart('all')"
-      >
-        清空購物車
-      </button>
+    <div class="d-flex justify-content-end">
+      <div class="input-group input-group-sm w-25">
+        <input type="text" class="form-control" v-model="code" />
+        <button class="btn btn-outline-success" @click.prevent="checkCoupon()">
+          套用優惠券
+        </button>
+      </div>
     </div>
+
     <!-- 購買人資訊 -->
     <VForm
       class="col-md-6 m-auto"
@@ -183,6 +196,8 @@ setLocale('zh_TW');
 export default {
   data() {
     return {
+      code: '',
+      useCoupon: '',
       user: {
         email: '',
         name: '',
@@ -205,6 +220,23 @@ export default {
 
       return phoneNumber.test(value) ? true : '需要正確的電話號碼';
     },
+    checkCoupon() {
+      // console.log(this.code);
+      const code = { code: this.code };
+      const url = `${import.meta.env.VITE_APP_API_URL}/api/${
+        import.meta.env.VITE_APP_API_PATH
+      }/coupon`;
+
+      axios
+        .post(url, { data: code })
+        .then((res) => {
+          console.log(res.data);
+          this.useCoupon = res.data;
+        })
+        .catch((err) => {
+          swal('', err.response.data.message, 'warning', { timer: 2000 });
+        });
+    },
     onSubmit() {
       if (this.cartList.length === 0) {
         swal('', '購物車內無商品', 'warning');
@@ -221,11 +253,12 @@ export default {
           .then((res) => {
             // console.log(res.data);
             this.$refs.form.resetForm();
+            this.message = '';
             swal('', res.data.message, 'success', { timer: 2000 });
             this.getCart();
           })
-          .catch(() => {
-            // console.dir(err);
+          .catch((err) => {
+            swal('', err.response.data.message, 'warning', { timer: 2000 });
           });
       }
     },
