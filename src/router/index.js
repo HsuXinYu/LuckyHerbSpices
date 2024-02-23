@@ -37,7 +37,7 @@ const routes = [
     component: () => import('@/views/admin/AdminView.vue'),
     children: [
       {
-        path: 'my-products',
+        path: 'products',
         name: 'AdminProducts',
         component: () => import('@/views/admin/ProductsView.vue'),
       },
@@ -47,9 +47,9 @@ const routes = [
         component: () => import('@/views/admin/OrdersView.vue'),
       },
       {
-        path: 'coupon',
+        path: 'coupons',
         name: 'AdminCoupon',
-        component: () => import('@/views/admin/CouponView.vue'),
+        component: () => import('@/views/admin/CouponsView.vue'),
       },
     ],
   },

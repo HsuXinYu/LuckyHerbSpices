@@ -30,7 +30,7 @@ export default {
           .post(url)
           .then(() => {
             // console.log(res.data);
-            this.$router.push('/admin/my-products');
+            this.$router.push('/admin/products');
           })
           .catch((err) => {
             // console.dir(err);
